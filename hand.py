@@ -57,7 +57,7 @@ class Hand:
             else:
                 return False
 
-        return count == 5
+        return count >= 5
 
     def __init__(self, cards):
         cards = sorted(cards, key=lambda card: card.number)
