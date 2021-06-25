@@ -16,7 +16,7 @@ class Value(IntEnum):
 class Hand:
 
     def get_runs(cards, run_length):
-        start = Card(0,0)
+        start = Card(0, 'X')
         same_count = 0
         runs = []
 
