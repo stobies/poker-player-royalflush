@@ -59,7 +59,15 @@ class Card:
                 allCards.append(deckCard)
         
         return allCards
-                
+
+    def cleanUpDeck(deck, communityCards, playerCards):
+        for card in communityCards:
+            if card in deck:
+                deck.remove(card)
+
+        for card in playerCards:
+            if card in deck:
+                deck.remove(card)          
 
 
 
