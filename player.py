@@ -8,7 +8,7 @@ from signal import *
 total_time = 0
 
 class Player:
-    VERSION = "Royal Flush v8"
+    VERSION = "Royal Flush v9"
 
     def betRequest(self, game_state):
         idx = game_state["in_action"]
@@ -44,7 +44,7 @@ class Player:
                 cards.append(game_state["players"][idx]["hole_cards"][1])
                 hand = Hand(Card.getCards(cards))
                 if hand.value.value == Value.THREE.value:
-                    return stack - max_bet
+                    return stack - 100
                 if hand.value.value >= Value.STRAIGHT.value:
                     return stack
                 num_players = 0
@@ -59,11 +59,11 @@ class Player:
                     min_chance = 0.10
                 # second round
                 if len(game_state["community_cards"]) == 4:
-                    min_chance = 0.20
+                    min_chance = 0.25
                     raise_amount = raise_amount * 2
                 # third round
                 if len(game_state["community_cards"]) == 5:
-                    min_chance = 0.30
+                    min_chance = 0.35
                     raise_amount = raise_amount * 5
                 if win > 2 * min_chance:
                     bet = min_bet + raise_amount
