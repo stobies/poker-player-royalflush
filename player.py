@@ -39,27 +39,28 @@ class Player:
             elif min_bet > 100:
                 return 0
             """
-            pocket = Card.getCards(game_state["players"][idx]["hole_cards"])
-            community = Card.getCards(game_state["community_cards"])
-            win = MonteCarlo.run(pocket, community, 5, time_per_round)[0]
             # zero round
             if len(game_state["community_cards"]) == 0:
-                min_chance = 0.15 # 1/7
-            # first round
-            if len(game_state["community_cards"]) == 3:
-                min_chance = 0.20
-            # second round
-            if len(game_state["community_cards"]) == 4:
-                min_chance = 0.30
-            # third round
-            if len(game_state["community_cards"]) == 5:
-                min_chance = 0.40
-            if win > 2 * min_chance:
-                bet = min_bet + raise_amount
-            elif win > min_chance:
                 bet = min_bet
             else:
-                bet = 0
+                pocket = Card.getCards(game_state["players"][idx]["hole_cards"])
+                community = Card.getCards(game_state["community_cards"])
+                win = MonteCarlo.run(pocket, community, 5, time_per_round)[0]
+                # first round
+                if len(game_state["community_cards"]) == 3:
+                    min_chance = 0.20
+                # second round
+                if len(game_state["community_cards"]) == 4:
+                    min_chance = 0.30
+                # third round
+                if len(game_state["community_cards"]) == 5:
+                    min_chance = 0.40
+                if win > 2 * min_chance:
+                    bet = min_bet + raise_amount
+                elif win > min_chance:
+                    bet = min_bet
+                else:
+                    bet = 0
 
             if min_bet > max_bet:
                 return 0
