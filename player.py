@@ -78,7 +78,7 @@ class Player:
         if bet > stack:
             return stack
         
-        total_time = (time.time() - time_start) * 1000
+        total_time += (time.time() - time_start) * 1000
 
         return bet
 
