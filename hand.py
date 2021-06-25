@@ -1,8 +1,8 @@
 
-from enum import Enum
+from enum import IntEnum
 from card import Card
 
-class Value(Enum):
+class Value(IntEnum):
     HIGH_CARD = 1
     PAIR = 2
     TWO_PAIRS = 3
@@ -113,19 +113,19 @@ class Hand:
         self.high_cards = cards
 
     def beats(self, other):
-        if self.value.value > other.value.value:
+        if self.value > other.value:
             return True
-        if self.value.value  < other.value.value :
+        if self.value  < other.value :
             return False
 
-        if self.value.value  >= Value.STRAIGHT.value :
+        if self.value >= Value.STRAIGHT :
             # don't worry about rare hands
             return True
 
-        if self.value.value  == Value.THREE.value:
+        if self.value == Value.THREE:
             return self.triple[0].number >=  other.triple[0].number
 
-        if self.value.value  == Value.TWO_PAIRS.value :
+        if self.value == Value.TWO_PAIRS :
             if self.pairs[0].number > other.pairs[0].number:
                 return True
             elif self.pairs[0].number < other.pairs[0].number:
@@ -138,10 +138,10 @@ class Hand:
                 else:
                     return self.kicker.number >= other.kicker.number
 
-        if self.value.value  == Value.PAIR.value :
-            if self.pair.value > other.pair.value:
+        if self.value == Value.PAIR:
+            if self.pair.number > other.pair.number:
                 return True
-            elif self.pair.value < other.pair.value:
+            elif self.pair.number < other.pair.number:
                 return False
             else:
                 for l,r in zip(self.kickers, other.kickers):
@@ -151,7 +151,7 @@ class Hand:
                         return False
                 return True
 
-        if self.value.value  == Value.HIGH_CARD.value:
+        if self.value == Value.HIGH_CARD:
             for l,r in zip(self.high_cards, other.high_cards):
                 if l.number > r.number:
                     return True

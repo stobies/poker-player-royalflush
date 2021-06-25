@@ -90,23 +90,23 @@ def test_cards(game_state):
 
 def test_hand():
     highcard = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(12, "H"), Card(8, "H")])
-    assert highcard.value.value is Value.HIGH_CARD.value, print(highcard.value.value)
+    assert highcard.value is Value.HIGH_CARD, print(highcard.value)
     pair = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(8, "H")])
-    assert pair.value.value is Value.PAIR.value, print(pair.value.value)
+    assert pair.value is Value.PAIR, print(pair.value)
     twopair = Hand([Card(11, "D"), Card(5, "D"), Card(8, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(8, "H")])
-    assert twopair.value.value is Value.TWO_PAIRS.value, print(twopair.value.value)
+    assert twopair.value is Value.TWO_PAIRS, print(twopair.value)
     three = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(5, "S")])
-    assert three.value.value is Value.THREE.value, print(three.value.value)
+    assert three.value is Value.THREE, print(three.value)
     straight = Hand([Card(2, "D"), Card(3, "S"), Card(4, "D"), Card(4, "C"), Card(5, "D"), Card(6, "H"), Card(6, "D")])
-    assert straight.value.value == Value.STRAIGHT.value, print(straight.value.value)
+    assert straight.value == Value.STRAIGHT, print(straight.value)
     flush = Hand([Card(9, "D"), Card(5, "D"), Card(3, "D"), Card(13, "D"), Card(12, "D"), Card(2, "H"), Card(8, "H")])
-    assert flush.value.value is Value.FLUSH.value, print(flush.value.value)
+    assert flush.value is Value.FLUSH, print(flush.value)
     full_house = Hand([Card(2, "D"), Card(2, "D"), Card(3, "D"), Card(3, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D")])
-    assert full_house.value.value == Value.FULL_HOUSE.value
+    assert full_house.value == Value.FULL_HOUSE
     four = Hand([Card(5, "C"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(5, "S")])
-    assert four.value.value is Value.FOUR.value, print(four.value.value)
+    assert four.value is Value.FOUR, print(four.value)
     straightflush = Hand([Card(2, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D"), Card(5, "D"), Card(6, "D"), Card(6, "D")])
-    assert straightflush.value.value == Value.STRAIGHT_FLUSH.value, print(straightflush.value.value)
+    assert straightflush.value == Value.STRAIGHT_FLUSH.value, print(straightflush.value)
 
     assert pair.beats(highcard) 
     assert twopair.beats(highcard) and twopair.beats(pair)
