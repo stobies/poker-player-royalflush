@@ -1,3 +1,4 @@
+import random
 
 class Card:
     numbers = list(range(2, 15))
@@ -10,6 +11,9 @@ class Card:
     def __init__(self, number, suit):
         self.number = number
         self.suit = suit
+
+    def __eq__(self, other):
+        return self.number == other.number and self.suit == other.suit
 
     def getCard(self):
         return [self.number, self.suit]
@@ -24,7 +28,7 @@ class Card:
         apiSuits = ["hearts", "spades", "clubs", "diamonds"]
         cards = []
         for card in cardsList:
-            newCard = Card()
+            newCard = Card(0, 0)
             rank = card["rank"]
             suit = card["suit"]
             cardNumber = 0
@@ -39,6 +43,29 @@ class Card:
             cards.append(newCard)
         
         return cards
+
+    def generateRandomConfig(communityCards, playerCards):
+        cardsToGenerate = 5 - len(communityCards)
+        adjList = []
+        for i in range(0, cardsToGenerate):
+            flag = False
+            while flag is False:
+                rank = random.randint(2, 14)
+                suit = random.randint(0, 3)
+                newCard = Card(rank, Card.suits[suit])
+                if not (newCard in communityCards or newCard in playerCards):
+                    flag = True
+                    adjList.append(newCard)
+            
+        
+        list = communityCards + adjList
+        return list
+                
+
+
+
+
+
 
             
 
