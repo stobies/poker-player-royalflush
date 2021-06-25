@@ -22,9 +22,11 @@ class Player:
                 bet = min_bet * 10 
             elif min_bet > 100:
                 return 0
+            win = 0
+            """
             pocket = Hand(Card.getCards(game_state["players"][idx]["hole_cards"]))
             community = Hand(Card.getCards(game_state["community_cards"]))
-            win = MonteCarlo.run(pocket, community, 5, 1000)[0]
+            #win = MonteCarlo.run(pocket, community, 5, 1000)[0]
             print(win)
             # zero round
             if len(game_state["community_cards"]) == 0:
@@ -44,6 +46,7 @@ class Player:
                 bet = min_bet
             else:
                 bet = 0
+            """
             if win <= 0:
                 bet = min_bet
         except :
