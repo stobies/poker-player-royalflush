@@ -60,6 +60,9 @@ class Player:
             else:
                 bet = 0
 
+            if min_bet > 200:
+                return 0
+
             if win <= 0:
                 bet = min_bet
         except :
