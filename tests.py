@@ -129,6 +129,7 @@ def test_player(game_state):
     p = Player()
     assert p.betRequest(game_state) > 0
 
+test_cards(test_game)
 try:
     test_cards(test_game)
     print("TEST CARDS PASSED!")
