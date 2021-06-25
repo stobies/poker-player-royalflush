@@ -76,7 +76,8 @@ def test_cards(game_state):
         print(el.number, " ", el.suit, "\n")
 
     print("Generated cards")
-    list = Card.generateRandomConfig(communityCards, playerCards)
+    deck = Card.generateDeck()
+    list = Card.generateRandomConfig(deck, communityCards, playerCards)
     for el in list:
         print(el.number, " ", el.suit, "\n")  
 try:
@@ -84,3 +85,5 @@ try:
     print("success")
 except:
     print("fail")
+
+

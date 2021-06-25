@@ -4,10 +4,6 @@ class Card:
     numbers = list(range(2, 15))
     suits = ['H','S','C','D']
 
-    def __init__(self):
-        self.number = 0
-        self.suit = 'X'
-
     def __init__(self, number, suit):
         self.number = number
         self.suit = suit
@@ -44,22 +40,25 @@ class Card:
         
         return cards
 
-    def generateRandomConfig(communityCards, playerCards):
+    def generateRandomConfig(deck, communityCards, playerCards):
         cardsToGenerate = 5 - len(communityCards)
-        adjList = []
-        for i in range(0, cardsToGenerate):
-            flag = False
-            while flag is False:
-                rank = random.randint(2, 14)
-                suit = random.randint(0, 3)
-                newCard = Card(rank, Card.suits[suit])
-                if not (newCard in communityCards or newCard in playerCards):
-                    flag = True
-                    adjList.append(newCard)
-            
-        
+        adjList = random.sample(deck, cardsToGenerate)
+        for el in adjList:
+            deck.remove(el)
+
         list = communityCards + adjList
         return list
+    
+    def generateDeck():
+        allCards = []
+        numbers = list(range(2, 15))
+        suits = ['H','S','C','D']
+        for number in numbers:
+            for suit in suits:
+                deckCard = Card(number, suit)
+                allCards.append(deckCard)
+        
+        return allCards
                 
 
 
