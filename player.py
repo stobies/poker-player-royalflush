@@ -52,9 +52,11 @@ class Player:
                 # second round
                 if len(game_state["community_cards"]) == 4:
                     min_chance = 0.30
+                    raise_amount = raise_amount * 5
                 # third round
                 if len(game_state["community_cards"]) == 5:
                     min_chance = 0.40
+                    raise_amount = raise_amount * 10
                 if win > 2 * min_chance:
                     bet = min_bet + raise_amount
                 elif win > min_chance:
