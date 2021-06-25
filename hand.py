@@ -1,8 +1,6 @@
 
 from enum import Enum
-
 from card import Card
-
 
 class Value(Enum):
     HIGH_CARD = 1
@@ -30,7 +28,11 @@ class Hand:
             else:
                 if same_count == run_length:
                     runs.append(start)
+                same_count = 1
                 start = c
+
+        if same_count == run_length:
+            runs.append(start)
 
         return runs
 
@@ -60,28 +62,53 @@ class Hand:
 
         return count == 5
 
-    # def __init__(self, cards):
-    #     cards = sorted(cards, lambda card: card.number)
+    def __init__(self, cards):
+        cards = sorted(cards, lambda card: card.number)
 
-    #     flush = Hand.get_flush(cards)
-    #     straight = Hand.get_straight(cards)
+        flush = Hand.get_flush(cards)
+        straight = Hand.get_straight(cards)
 
-    #     if flush and straight:
-    #         self.value = Value.STRAIGHT_FLUSH
-    #     elif straight:
-    #         self.value = Value.STRAIGHT
+        if flush and straight:
+            self.value = Value.STRAIGHT_FLUSH
+            return
+        elif straight:
+            self.value = Value.STRAIGHT
+            return
         
-    #     quad = Hand.get_runs(cards, 4)
-    #     if quad:
-    #         self.value = Value.FOUR
-    #         self.card = quad[0]
+        quad = Hand.get_runs(cards, 4)
+        if quad:
+            self.value = Value.FOUR
+            return
+        
+        triples = Hand.get_runs(cards, 3)
+        pairs = Hand.get_runs(cards, 2)
 
-    #     triples = Hand.get_runs(cards, 3)
-    #     pairs = Hand.get_runs(cards, 2)
+        if triples and pairs:
+            self.value = Value.FULL_HOUSE
+            return
 
-    #     if triples and pairs:
-    #         self.value = Value.FULL_HOUSE
+        if flush:
+            self.value = Value.FLUSH
+            return
 
+        if triples:
+            self.value = Value.THREE
+            self.triples = triples.reverse()[0]
+            return
 
+        if len(pairs) >= 2:
+            self.value = Value.TWO_PAIRS
+            self.pairs = pairs.reverse()
+            self.kicker = cards[-1]
+            return
+
+        if pairs:
+            self.value = Value.PAIR
+            self.pair = pairs[0]
+            self.kicker = cards[-1]
+            return
+        
+        self.value = Value.HIGH_CARD
+        self.high_card = cards[-1]
 
 

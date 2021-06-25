@@ -74,7 +74,14 @@ def test_cards(game_state):
 
 def test_hand():
     flush = [Card(2, "D"), Card(5, "D"), Card(3, "D"), Card(4, "D"), Card(8, "D"), Card(9, "H"), Card(8, "H")]
-    assert Hand.get_flush(flush) != ''
+    assert Hand.get_flush(flush) == True
+
+    straight = [Card(2, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D"), Card(5, "D"), Card(6, "D"), Card(6, "D")]
+    assert Hand.get_straight(straight) == True
+
+    full_house = [Card(2, "D"), Card(2, "D"), Card(3, "D"), Card(3, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D")]
+    assert len(Hand.get_runs(full_house, 2)) == 2
+    assert len(Hand.get_runs(full_house, 3)) == 1
 
 def test_player(game_state):
     p = Player()
