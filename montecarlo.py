@@ -2,7 +2,6 @@ from card import *
 from hand import *
 
 import time
-import random
 
 def current_ms():
     return round(time.time() * 1000)
@@ -15,15 +14,13 @@ class MonteCarlo:
         rounds = 0
         won = 0
 
-        starting_deck = Card.generateDeck()
-        Card.cleanUpDeck(starting_deck, pocket_cards, community_cards)
 
         while (current_ms() <= start_time + time_allowed):
             rounds += 1
-            deck = starting_deck.copy()
-
-            my_hand = Hand(Card.generateRandomConfig(deck, community_cards, pocket_cards))
+            deck = Card.generateDeck()
+            Card.cleanUpDeck(deck, pocket_cards, community_cards)
             my_hand_is_best = True
+            my_hand = Hand(Card.generateRandomConfig(deck, community_cards, pocket_cards))
 
             for i in range(0, no_of_players):
                 other_hand = Hand(Card.generateRandomConfig(deck, community_cards, []))
@@ -40,5 +37,5 @@ class MonteCarlo:
         
         return (0,0)
 
-
-# print (MonteCarlo.run([Card(5, 'H'), Card(6, 'H')], [], 6, 2000))
+#print(MonteCarlo.run([Card(5, 'H'), Card(5, 'S')], [], 6, 2000))
+#cProfile.run('MonteCarlo.run([Card(5, \'H\'), Card(6, \'H\')], [], 6, 2000)')

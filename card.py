@@ -42,12 +42,11 @@ class Card:
 
     def generateRandomConfig(deck, communityCards, playerCards):
         cardsToGenerate = 7 - len(communityCards) - len(playerCards)
-        adjList = random.sample(deck, cardsToGenerate)
-        for el in adjList:
-            deck.remove(el)
+        list = []
+        for i in range(0, cardsToGenerate):
+            list.append(deck.pop())
 
-        list = playerCards + communityCards + adjList 
-        return list
+        return list + communityCards + playerCards
     
     def generateDeck():
         allCards = []
@@ -57,17 +56,16 @@ class Card:
             for suit in suits:
                 deckCard = Card(number, suit)
                 allCards.append(deckCard)
-        
+
+        random.shuffle(allCards)
         return allCards
 
     def cleanUpDeck(deck, communityCards, playerCards):
         for card in communityCards:
-            if card in deck:
-                deck.remove(card)
+            deck.remove(card)
 
         for card in playerCards:
-            if card in deck:
-                deck.remove(card)          
+            deck.remove(card)
 
 
 
