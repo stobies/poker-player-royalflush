@@ -8,7 +8,7 @@ from signal import *
 total_time = 0
 
 class Player:
-    VERSION = "Royal Flush v10"
+    VERSION = "Royal Flush v11"
 
     def betRequest(self, game_state):
         idx = game_state["in_action"]
@@ -16,7 +16,7 @@ class Player:
         current_bet = game_state["players"][idx]["bet"]
         bet = 0
         min_bet = game_state["current_buy_in"] - current_bet
-        raise_amount = min_bet * 2
+        raise_amount = min_bet + 0.1 * stack
         max_bet = 500
         if current_bet > max_bet:
             return min_bet
