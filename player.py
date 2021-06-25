@@ -17,11 +17,11 @@ class Player:
         bet = 0
         min_bet = game_state["current_buy_in"] - current_bet
         raise_amount = min_bet * 2
-        max_bet = 400
+        max_bet = 500
 
         time_start = time.time()
 
-        time_per_round = 60
+        time_per_round = 50
         global total_time
         if game_state["round"] == 0:
             total_time = 0
