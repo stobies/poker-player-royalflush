@@ -87,3 +87,14 @@ except:
     print("fail")
 
 
+try:
+    deck = Card.generateDeck()
+    idx = test_game["in_action"]
+    communityCards = Card.getCards(test_game["community_cards"])
+    playerCards = Card.getCards(test_game["players"][idx]["hole_cards"])
+    Card.cleanUpDeck(deck, communityCards, playerCards)
+    for el in deck:
+        print(el.number, " ", el.suit)
+except:
+    print("fail")
+
