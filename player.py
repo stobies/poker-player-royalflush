@@ -8,7 +8,7 @@ from signal import *
 total_time = 0
 
 class Player:
-    VERSION = "Royal Flush v6"
+    VERSION = "Royal Flush v7"
 
     def betRequest(self, game_state):
         idx = game_state["in_action"]
