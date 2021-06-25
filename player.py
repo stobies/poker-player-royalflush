@@ -16,10 +16,12 @@ class Player:
         bet = 0
         min_bet = game_state["current_buy_in"] - game_state["players"][idx]["bet"]
         raise_amount = min_bet * 2
-        
+        max_bet = 200
+
         time_per_round = 100
-        if game_state["round"] > 20000 / time_per_round:
-            print("TIMEOUT!")
+        if game_state["round"] > 15000 / time_per_round:
+            if min_bet > max_bet:
+                return 0
             bet = min_bet
             if bet > stack:
                 return stack
@@ -40,7 +42,6 @@ class Player:
             pocket = Card.getCards(game_state["players"][idx]["hole_cards"])
             community = Card.getCards(game_state["community_cards"])
             win = MonteCarlo.run(pocket, community, 5, time_per_round)[0]
-            print(win)
             # zero round
             if len(game_state["community_cards"]) == 0:
                 min_chance = 0.15 # 1/7
@@ -60,14 +61,13 @@ class Player:
             else:
                 bet = 0
 
-            if min_bet > 200:
+            if min_bet > max_bet:
                 return 0
 
             if win <= 0:
                 bet = min_bet
         except :
             bet = min_bet
-            print("EXCEPTION!")
         if bet > stack:
             return stack
         return bet
