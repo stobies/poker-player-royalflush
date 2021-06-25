@@ -14,20 +14,21 @@ class MonteCarlo:
         start_time = current_ms()
         rounds = 0
         won = 0
+
+        starting_deck = Card.generateDeck()
+        Card.cleanUpDeck(starting_deck, pocket_cards, community_cards)
+
         while (current_ms() <= start_time + time_allowed):
             rounds += 1
-            deck = Card.generateDeck()
-            Card.cleanUpDeck(deck, pocket_cards, community_cards)
-            my_hand = Hand(Card.generateRandomConfig(deck, community_cards, pocket_cards))
-            other_hands = []
+            deck = starting_deck.copy()
 
-            for i in range(0, no_of_players):
-                other_hands.append(Hand(Card.generateRandomConfig(deck, community_cards, [])))
-        
+            my_hand = Hand(Card.generateRandomConfig(deck, community_cards, pocket_cards))
             my_hand_is_best = True
 
-            for oh in other_hands:
-                if oh.beats(my_hand):
+            for i in range(0, no_of_players):
+                other_hand = Hand(Card.generateRandomConfig(deck, community_cards, []))
+
+                if other_hand.beats(my_hand):
                     my_hand_is_best = False
                     break
 
@@ -38,3 +39,6 @@ class MonteCarlo:
             return (won / rounds, rounds)
         
         return (0,0)
+
+
+# print (MonteCarlo.run([Card(5, 'H'), Card(6, 'H')], [], 6, 2000))
