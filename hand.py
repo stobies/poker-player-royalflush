@@ -16,10 +16,8 @@ class Value(Enum):
 class Hand:
 
     def get_runs(cards, run_length):
-
         start = Card(0,0)
         same_count = 0
-        
         runs = []
 
         for c in cards:
@@ -48,7 +46,6 @@ class Hand:
         return False
 
     def get_straight(cards):
-        
         last_card = cards.pop(0)
         count = 1
         for c in cards:
@@ -93,7 +90,7 @@ class Hand:
 
         if triples:
             self.value = Value.THREE
-            self.triples = triples.reverse()[0]
+            self.triple = triples.reverse()[0]
             return
 
         if len(pairs) >= 2:
@@ -105,10 +102,58 @@ class Hand:
         if pairs:
             self.value = Value.PAIR
             self.pair = pairs[0]
-            self.kicker = cards[-1]
+            self.kickers = cards.reverse()
             return
         
         self.value = Value.HIGH_CARD
-        self.high_card = cards[-1]
+        self.high_cards = cards.reverse()
 
+    def beats(self, other):
+        if self.value > other.value:
+            return True
+        if self.value < other.value:
+            return False
+
+        if self.value >= Value.STRAIGHT:
+            # don't worry about rare hands
+            return True
+
+        if self.value == Value.THREE:
+            return self.triple.value >=  other.triple.value
+
+        if self.value == Value.TWO_PAIRS:
+            if self.pairs[0].value > other.pairs[0].value:
+                return True
+            elif self.pairs[0].value < other.pairs[0].value:
+                return False
+            else:
+                if self.pairs[1].value > other.pairs[1].value:
+                    return True
+                elif self.pairs[1].value < other.pairs[1].value:
+                    return False
+                else:
+                    return self.kicker.value >= other.kicker.value
+
+        if self.value == Value.PAIR:
+            if self.pair.value > other.pair.value:
+                return True
+            elif self.pair.value < other.pair.value:
+                return False
+            else:
+                for l,r in zip(self.kickers, other.kickers):
+                    if l.value < r.value:
+                        return True
+                    elif l.value > r.value:
+                        return False
+                return True
+
+        if self.value == Value.HIGH_CARD:
+            for l,r in zip(self.high_cards, other.high_cards):
+                if l.value < r.value:
+                    return True
+                elif l.value > r.value:
+                    return False
+            return True
+
+        return True
 
