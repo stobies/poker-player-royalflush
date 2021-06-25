@@ -8,7 +8,7 @@ from signal import *
 total_time = 0
 
 class Player:
-    VERSION = "Royal Flush v4"
+    VERSION = "Royal Flush v5"
 
     def betRequest(self, game_state):
         idx = game_state["in_action"]
@@ -34,21 +34,19 @@ class Player:
                 return stack
             return bet
 
-        try:    
-            """
-            cards = game_state["community_cards"]
-            cards.append(game_state["players"][idx]["hole_cards"][0])
-            cards.append(game_state["players"][idx]["hole_cards"][1])
-            hand = Hand(Card.getCards(cards))
-            if hand.value.value >= Value.TWO_PAIRS.value:
-                bet = min_bet * 10 
-            elif min_bet > 100:
-                return 0
-            """
+        try:
             # zero round
             if len(game_state["community_cards"]) == 0:
                 bet = min_bet
             else:
+                cards = game_state["community_cards"].copy()
+                cards.append(game_state["players"][idx]["hole_cards"][0])
+                cards.append(game_state["players"][idx]["hole_cards"][1])
+                hand = Hand(Card.getCards(cards))
+                if hand.value.value == Value.THREE.value:
+                    return stack - max_bet
+                if hand.value.value >= Value.STRAIGHT.value:
+                    return stack 
                 pocket = Card.getCards(game_state["players"][idx]["hole_cards"])
                 community = Card.getCards(game_state["community_cards"])
                 win = MonteCarlo.run(pocket, community, 5, time_per_round)[0]
