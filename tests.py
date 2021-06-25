@@ -71,17 +71,59 @@ def test_cards(game_state):
     ret_comm = Card.getCards(comm)
     assert len(ret_comm) == 3
     assert ret_comm[0] == {4, "S"} and ret_comm[1] == {14, "H"} and ret_comm[2] == {6, "C"}, "Received: " + str(ret_comm)
+    comm.append({"rank": "K", "suit": "diamonds"})
+    ret_comm = Card.getCards(comm)
+    assert len(ret_comm) == 4
+    assert ret_comm[3] == {13, "D"}, "Received: " + str(ret_comm)
+    comm.append({"rank": "2", "suit": "clubs"})
+    ret_comm = Card.getCards(comm)
+    assert len(ret_comm) == 5
+    assert ret_comm[4] == {2, "C"}, "Received: " + str(ret_comm)
+    comm.append(game_state["players"][1]["hole_cards"])
+    ret_comm = Card.getCards(comm)
+    assert len(ret_comm) == 7
+    assert ret_comm[5] == {6, "H"} and ret_comm[6] == {13, "S"}, "Received: " + str(ret_comm)
+
+
+
+
 
 def test_hand():
-    flush = [Card(2, "D"), Card(5, "D"), Card(3, "D"), Card(4, "D"), Card(8, "D"), Card(9, "H"), Card(8, "H")]
-    assert Hand.get_flush(flush) == True
+    highcard = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(12, "H"), Card(8, "H")])
+    assert highcard.value.value is Value.HIGH_CARD.value, print(highcard.value.value)
+    pair = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(8, "H")])
+    assert pair.value.value is Value.PAIR.value, print(pair.value.value)
+    twopair = Hand([Card(11, "D"), Card(5, "D"), Card(8, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(8, "H")])
+    assert twopair.value.value is Value.TWO_PAIRS.value, print(twopair.value.value)
+    three = Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(5, "S")])
+    assert three.value.value is Value.THREE.value, print(three.value.value)
+    straight = Hand([Card(2, "D"), Card(3, "S"), Card(4, "D"), Card(4, "C"), Card(5, "D"), Card(6, "H"), Card(6, "D")])
+    assert straight.value.value == Value.STRAIGHT.value, print(straight.value.value)
+    flush = Hand([Card(9, "D"), Card(5, "D"), Card(3, "D"), Card(13, "D"), Card(12, "D"), Card(2, "H"), Card(8, "H")])
+    assert flush.value.value is Value.FLUSH.value, print(flush.value.value)
+    full_house = Hand([Card(2, "D"), Card(2, "D"), Card(3, "D"), Card(3, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D")])
+    assert full_house.value.value == Value.FULL_HOUSE.value
+    four = Hand([Card(5, "C"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(5, "H"), Card(5, "S")])
+    assert four.value.value is Value.FOUR.value, print(four.value.value)
+    straightflush = Hand([Card(2, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D"), Card(5, "D"), Card(6, "D"), Card(6, "D")])
+    assert straightflush.value.value == Value.STRAIGHT_FLUSH.value, print(straightflush.value.value)
 
-    straight = [Card(2, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D"), Card(5, "D"), Card(6, "D"), Card(6, "D")]
-    assert Hand.get_straight(straight) == True
+    assert pair.beats(highcard) 
+    assert twopair.beats(highcard) and twopair.beats(pair)
+    assert three.beats(twopair) and three.beats(pair)
+    assert straight.beats(three) and straight.beats(twopair)
+    assert flush.beats(three) and flush.beats(twopair)
+    assert full_house.beats(straight) and full_house.beats(flush)
+    assert four.beats(straight) and four.beats(flush)
+    assert straightflush.beats(straight) and straightflush.beats(four)
+    
+    twopair.beats(Hand([Card(11, "D"), Card(4, "D"), Card(8, "C"), Card(4, "D"), Card(9, "C"), Card(4, "H"), Card(8, "H")]))
+    assert three.beats(Hand([Card(11, "D"), Card(3, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(3, "H"), Card(3, "S")]))
+    assert highcard.beats(Hand([Card(11, "D"), Card(5, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(7, "H"), Card(8, "H")]))
+    assert pair.beats(Hand([Card(11, "D"), Card(2, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(2, "H"), Card(8, "H")]))
+    highpair = Hand([Card(11, "D"), Card(11, "D"), Card(3, "C"), Card(4, "D"), Card(9, "C"), Card(11, "H"), Card(8, "H")])
+    assert highpair.beats(pair)
 
-    full_house = [Card(2, "D"), Card(2, "D"), Card(3, "D"), Card(3, "D"), Card(3, "D"), Card(4, "D"), Card(4, "D")]
-    assert len(Hand.get_runs(full_house, 2)) == 2
-    assert len(Hand.get_runs(full_house, 3)) == 1
 
 def test_player(game_state):
     p = Player()
@@ -89,16 +131,16 @@ def test_player(game_state):
 
 try:
     test_cards(test_game)
-    print("\nTEST CARDS PASSED!")
+    print("TEST CARDS PASSED!")
 except:
-    print("\nTEST CARDS FAILED!")
+    print("TEST CARDS FAILED!")
 try:
     test_hand()
-    print("\nTEST HAND PASSED!")
+    print("TEST HAND PASSED!")
 except:
-    print("\nTEST HAND FAILED!")
+    print("TEST HAND FAILED!")
 try:
     test_player(test_game)
-    print("\nTEST PLAYER PASSED!")
+    print("TEST PLAYER PASSED!")
 except:
-    print("\nTEST HAND FAILED!")
+    print("TEST PLAYER FAILED!")
