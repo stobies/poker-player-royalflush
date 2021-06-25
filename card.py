@@ -41,12 +41,12 @@ class Card:
         return cards
 
     def generateRandomConfig(deck, communityCards, playerCards):
-        cardsToGenerate = 5 - len(communityCards)
+        cardsToGenerate = 7 - len(communityCards) - len(playerCards)
         adjList = random.sample(deck, cardsToGenerate)
         for el in adjList:
             deck.remove(el)
 
-        list = communityCards + adjList
+        list = playerCards + communityCards + adjList 
         return list
     
     def generateDeck():
