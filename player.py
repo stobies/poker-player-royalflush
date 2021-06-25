@@ -21,7 +21,7 @@ class Player:
 
         time_start = time.time()
 
-        time_per_round = 100
+        time_per_round = 60
         global total_time
         if game_state["round"] == 0:
             total_time = 0
