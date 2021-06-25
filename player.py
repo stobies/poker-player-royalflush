@@ -16,7 +16,7 @@ class Player:
         bet = 0
         min_bet = game_state["current_buy_in"] - game_state["players"][idx]["bet"]
         raise_amount = min_bet * 2
-        max_bet = 200
+        max_bet = 300
 
         time_per_round = 100
         if game_state["round"] > 10000 / time_per_round:
@@ -48,15 +48,15 @@ class Player:
                 win = MonteCarlo.run(pocket, community, 5, time_per_round)[0]
                 # first round
                 if len(game_state["community_cards"]) == 3:
-                    min_chance = 0.20
+                    min_chance = 0.10
                 # second round
                 if len(game_state["community_cards"]) == 4:
-                    min_chance = 0.30
-                    raise_amount = raise_amount * 5
+                    min_chance = 0.20
+                    raise_amount = raise_amount * 3
                 # third round
                 if len(game_state["community_cards"]) == 5:
-                    min_chance = 0.40
-                    raise_amount = raise_amount * 10
+                    min_chance = 0.30
+                    raise_amount = raise_amount * 6
                 if win > 2 * min_chance:
                     bet = min_bet + raise_amount
                 elif win > min_chance:
